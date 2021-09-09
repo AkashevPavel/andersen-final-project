@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="75dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/listItemAvatarImageView"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintDimensionRatio="1:1"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="6dp"
+        tools:src="@tools:sample/backgrounds/scenic[4]"/>
+
+    <ImageView
+        android:id="@+id/listItemGenderImageView"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_male"
+        app:layout_constraintTop_toTopOf="@+id/listItemNameTextView"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/listItemNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="FULL NAME"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="6dp"
+        app:layout_constraintStart_toEndOf="@+id/listItemAvatarImageView"
+        app:layout_constraintEnd_toStartOf="@+id/listItemGenderImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnBackground"/>
+
+    <TextView
+        android:id="@+id/listItemStatusTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="status"
+        app:layout_constraintStart_toStartOf="@+id/listItemNameTextView"
+        app:layout_constraintTop_toBottomOf="@+id/listItemNameTextView"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/listItemSpeciesTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="human"
+        android:layout_marginStart="8dp"
+        android:textStyle="italic"
+        app:layout_constraintStart_toEndOf="@+id/listItemStatusTextView"
+        app:layout_constraintTop_toBottomOf="@+id/listItemNameTextView"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
