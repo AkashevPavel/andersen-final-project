@@ -3,6 +3,7 @@ package com.example.rickandmortyapp.data.network
 import com.example.rickandmortyapp.data.network.model.character.CharacterDto
 import com.example.rickandmortyapp.data.network.model.character.CharacterResponseDto
 import com.example.rickandmortyapp.data.network.model.episode.EpisodeDto
+import com.example.rickandmortyapp.data.network.model.episode.EpisodeResponseDto
 import com.example.rickandmortyapp.data.network.model.location.LocationDto
 import com.example.rickandmortyapp.data.network.model.location.LocationResponseDto
 import retrofit2.Response
@@ -41,6 +42,11 @@ interface RickAndMortyService {
     suspend fun getEpisodeById(
         @Path("episode-id") id: Int
     ): Response<EpisodeDto>
+
+    @GET("episode/")
+    suspend fun getEpisodesPage(
+        @Query("page") pageIndex: Int
+    ): Response<EpisodeResponseDto>
 
     @GET("episode/{episode-range}")
     suspend fun getEpisodeRange(

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyapp.R
+import com.example.rickandmortyapp.ui.character.RelatedCharactersAdapter
 
 class LocationInfoFragment : Fragment(R.layout.fragment_location_info) {
 
@@ -27,14 +28,14 @@ class LocationInfoFragment : Fragment(R.layout.fragment_location_info) {
     private val viewModel: LocationInfoViewModel by lazy {
         ViewModelProvider(this).get(LocationInfoViewModel::class.java)
     }
-    private lateinit var adapter: ResidentsAdapter
-    private lateinit var onResidentClickListener: OnResidentClickListener
+    private lateinit var adapter: RelatedCharactersAdapter
+    private lateinit var onResidentClickListener: OnRelatedCharacterClickListener
     private lateinit var recyclerView: RecyclerView
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        onResidentClickListener = context as OnResidentClickListener
-        adapter = ResidentsAdapter { onResidentClickListener.onCharacterClicked(it) }
+        onResidentClickListener = context as OnRelatedCharacterClickListener
+        adapter = RelatedCharactersAdapter { onResidentClickListener.onCharacterClicked(it) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,11 +52,11 @@ class LocationInfoFragment : Fragment(R.layout.fragment_location_info) {
             name.text = response.name
             type.text = response.type
             dimension.text = response.dimension
-            adapter.residentsList = response.residents
+            adapter.relatedCharactersList = response.residents
         }
     }
 
-    interface OnResidentClickListener {
+    interface OnRelatedCharacterClickListener {
         fun onCharacterClicked(id: Int)
     }
 }

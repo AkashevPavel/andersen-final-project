@@ -2,13 +2,15 @@ package com.example.rickandmortyapp.domain.mappers
 
 import com.example.rickandmortyapp.data.network.model.character.CharacterDto
 import com.example.rickandmortyapp.data.network.model.episode.EpisodeDto
+import com.example.rickandmortyapp.data.network.model.location.LocationDto
 import com.example.rickandmortyapp.domain.models.Character
 import com.example.rickandmortyapp.domain.models.Location
 
 object CharacterMapper {
     fun buildFrom(
         response: CharacterDto,
-        relatedEpisodes: List<EpisodeDto> = listOf()
+        relatedEpisodes: List<EpisodeDto> = listOf(),
+        relatedLocation: LocationDto? = null
     ): Character {
         return Character(
             name = response.name,
@@ -19,10 +21,12 @@ object CharacterMapper {
             gender = response.gender,
             image = response.image,
             location = Location(
+                id = response.location.id,
                 name = response.location.name,
                 url = response.location.url
             ),
             origin = Location(
+                id = response.origin.id,
                 name = response.origin.name,
                 url = response.origin.url
             ),

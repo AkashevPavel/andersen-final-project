@@ -4,6 +4,7 @@ import com.example.rickandmortyapp.data.network.model.character.CharacterDto
 import com.example.rickandmortyapp.data.network.model.character.CharacterResponseDto
 import com.example.rickandmortyapp.data.network.model.SimpleResponse
 import com.example.rickandmortyapp.data.network.model.episode.EpisodeDto
+import com.example.rickandmortyapp.data.network.model.episode.EpisodeResponseDto
 import com.example.rickandmortyapp.data.network.model.location.LocationDto
 import com.example.rickandmortyapp.data.network.model.location.LocationResponseDto
 import retrofit2.Response
@@ -28,6 +29,9 @@ class ApiClient(private val rickAndMortyService: RickAndMortyService) {
     }
     suspend fun getEpisodeById(episodeId: Int): SimpleResponse<EpisodeDto> {
         return safeApiCall { rickAndMortyService.getEpisodeById(episodeId) }
+    }
+    suspend fun getEpisodesPage(pageIndex: Int): SimpleResponse<EpisodeResponseDto> {
+        return safeApiCall { rickAndMortyService.getEpisodesPage(pageIndex) }
     }
     suspend fun getEpisodeRange(episodeRange: String): SimpleResponse<List<EpisodeDto>> {
         return safeApiCall { rickAndMortyService.getEpisodeRange(episodeRange) }

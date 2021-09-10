@@ -30,6 +30,7 @@ class CharacterRepository {
         return if (request.isSuccessful) request.body else null
     }
 
+
     private suspend fun getRelatedEpisodes(
         characterDto: CharacterDto
     ): List<EpisodeDto> {

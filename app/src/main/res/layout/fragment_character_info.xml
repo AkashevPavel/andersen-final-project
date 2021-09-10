@@ -12,9 +12,10 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/avatarImageView"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
+            android:layout_marginTop="16dp"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -77,9 +78,11 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/originTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
             app:layout_constraintStart_toStartOf="@+id/originLabelTextView"
+            app:layout_constraintEnd_toStartOf="@+id/speciesLabelTextView"
             app:layout_constraintTop_toBottomOf="@+id/originLabelTextView"
             android:textSize="18sp"
             android:text="Earth"/>
@@ -113,8 +116,9 @@
             android:textStyle="italic"
             android:textSize="26sp"
             android:textColor="?attr/colorOnBackground"
-            app:layout_constraintStart_toStartOf="@+id/locationLabelTextView"
-            app:layout_constraintTop_toBottomOf="@+id/locationLabelTextView"
+            app:layout_constraintStart_toEndOf="@+id/originLabelTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameTextView"
             android:text="Species"/>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -125,6 +129,21 @@
             app:layout_constraintTop_toBottomOf="@+id/speciesLabelTextView"
             android:textSize="18sp"
             android:text="Human"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/locationTextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="8dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/characterInfoRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"/>
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

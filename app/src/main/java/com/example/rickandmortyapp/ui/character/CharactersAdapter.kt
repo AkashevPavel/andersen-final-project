@@ -20,7 +20,7 @@ class CharactersAdapter(
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item)
-        holder.itemView.setOnClickListener { onClick(getItem(position)!!.id) }
+        holder.itemView.setOnClickListener { onClick(item!!.id) }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : CharacterViewHolder {
         val view = LayoutInflater

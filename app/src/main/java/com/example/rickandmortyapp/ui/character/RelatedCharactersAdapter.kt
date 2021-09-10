@@ -1,4 +1,4 @@
-package com.example.rickandmortyapp.ui.location
+package com.example.rickandmortyapp.ui.character
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,32 +10,32 @@ import coil.load
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.domain.models.Character
 
-class ResidentsAdapter(
+class RelatedCharactersAdapter(
     val onClick: (Int) -> Unit
-) : RecyclerView.Adapter<ResidentsAdapter.ResidentsHolder>() {
+) : RecyclerView.Adapter<RelatedCharactersAdapter.RelatedCharactersHolder>() {
 
-    var residentsList = listOf<Character>()
+    var relatedCharactersList = listOf<Character>()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResidentsHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RelatedCharactersHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_character, parent, false)
-        return ResidentsHolder(view)
+        return RelatedCharactersHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ResidentsHolder, position: Int) {
-        val resident = residentsList[position]
+    override fun onBindViewHolder(holder: RelatedCharactersHolder, position: Int) {
+        val resident = relatedCharactersList[position]
         holder.bind(resident)
         holder.itemView.setOnClickListener { onClick(resident.id) }
     }
 
-    override fun getItemCount() = residentsList.size
+    override fun getItemCount() = relatedCharactersList.size
 
-    class ResidentsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class RelatedCharactersHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val fullName: TextView = itemView.findViewById(R.id.charactersListItemNameTextView)
         private val avatar: ImageView = itemView.findViewById(R.id.charactersListItemAvatarImageView)

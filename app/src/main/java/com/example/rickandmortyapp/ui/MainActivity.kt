@@ -9,12 +9,17 @@ import androidx.fragment.app.replace
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.ui.character.CharacterInfoFragment
 import com.example.rickandmortyapp.ui.character.CharactersFragment
+import com.example.rickandmortyapp.ui.episode.EpisodeInfoFragment
+import com.example.rickandmortyapp.ui.episode.EpisodesFragment
 import com.example.rickandmortyapp.ui.location.LocationInfoFragment
 import com.example.rickandmortyapp.ui.location.LocationsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(R.layout.activity_main), CharactersFragment.OnCharacterClickedListener,
-    LocationInfoFragment.OnResidentClickListener, LocationsFragment.OnLocationClickedListener {
+    LocationInfoFragment.OnRelatedCharacterClickListener, LocationsFragment.OnLocationClickedListener,
+    EpisodesFragment.OnEpisodeClickedListener, EpisodeInfoFragment.OnRelatedCharacterClickListener,
+    CharacterInfoFragment.OnRelatedLocationClickedListener,
+    CharacterInfoFragment.OnRelatedEpisodeClickedListener {
 
     private lateinit var navigation: BottomNavigationView
 
@@ -38,7 +43,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), CharactersFragme
                     true
                 }
                 R.id.episodes_menu -> {
-                    supportFragmentManager.commit { replace<CharactersFragment>(R.id.container) }
+                    supportFragmentManager.commit { replace<EpisodesFragment>(R.id.container) }
                     true
                 }
                 else -> false
@@ -58,6 +63,14 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), CharactersFragme
         supportFragmentManager.beginTransaction().run{
             replace(R.id.container, LocationInfoFragment.newInstance(id), LocationInfoFragment.TAG)
             addToBackStack("location-info")
+            commit()
+        }
+    }
+
+    override fun onEpisodeClicked(id: Int) {
+        supportFragmentManager.beginTransaction().run {
+            replace(R.id.container, EpisodeInfoFragment.newInstance(id), EpisodeInfoFragment.TAG)
+            addToBackStack("episode-info")
             commit()
         }
     }

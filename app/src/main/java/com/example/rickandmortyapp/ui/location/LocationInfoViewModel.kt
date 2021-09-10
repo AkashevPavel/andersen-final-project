@@ -17,9 +17,6 @@ class LocationInfoViewModel: ViewModel() {
     private val _locationByIdLiveData: MutableLiveData<Location> = MutableLiveData()
     val locationByIdLiveData: LiveData<Location> = _locationByIdLiveData
 
-    private val _residentsLiveData: MutableLiveData<Character> = MutableLiveData()
-    val residentsLiveData: LiveData<Character> = _residentsLiveData
-
     fun refreshLocation(locationId: Int) {
         viewModelScope.launch {
             val response = repository.getLocationById(locationId)
