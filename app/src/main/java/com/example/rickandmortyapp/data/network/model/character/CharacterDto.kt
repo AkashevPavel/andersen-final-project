@@ -1,27 +1,19 @@
 package com.example.rickandmortyapp.data.network.model.character
 
+
+import com.example.rickandmortyapp.data.network.model.location.LocationDto
+
 data class CharacterDto(
     val created: String,
-    val episode: List<Any>,
+    val episode: List<String>,
     val gender: String,
     val id: Int,
     val image: String,
-    val location: Location,
+    val location: LocationDto,
     val name: String,
-    val origin: Origin,
+    val origin: LocationDto,
     val species: String,
     val status: String,
     val type: String,
     val url: String
-) {
-
-    data class Location(
-        val name: String,
-        val url: String
-    )
-
-    data class Origin(
-        val name: String,
-        val url: String
-    )
-}
+)

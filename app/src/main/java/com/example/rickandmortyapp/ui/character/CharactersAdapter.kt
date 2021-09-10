@@ -10,21 +10,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.rickandmortyapp.R
-import com.example.rickandmortyapp.data.model.Character
+import com.example.rickandmortyapp.domain.models.Character
 
 class CharactersAdapter(
     callBack: DiffUtil.ItemCallback<Character>,
     private val onClick: (Int) -> Unit
-) :
-    PagingDataAdapter<Character, CharactersAdapter.CharacterViewHolder>(callBack) {
-
+) : PagingDataAdapter<Character, CharactersAdapter.CharacterViewHolder>(callBack) {
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item)
         holder.itemView.setOnClickListener { onClick(getItem(position)!!.id) }
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : CharacterViewHolder {
         val view = LayoutInflater
             .from(parent.context)
@@ -35,20 +32,19 @@ class CharactersAdapter(
 
     class CharacterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val fullName: TextView = itemView.findViewById(R.id.listItemNameTextView)
-        private val avatar: ImageView = itemView.findViewById(R.id.listItemAvatarImageView)
-        private val status: TextView = itemView.findViewById(R.id.listItemStatusTextView)
-        private val species: TextView = itemView.findViewById(R.id.listItemSpeciesTextView)
-        private val gender: ImageView = itemView.findViewById(R.id.listItemGenderImageView)
+        private val fullName: TextView = itemView.findViewById(R.id.charactersListItemNameTextView)
+        private val avatar: ImageView = itemView.findViewById(R.id.charactersListItemAvatarImageView)
+        private val status: TextView = itemView.findViewById(R.id.charactersListItemStatusTextView)
+        private val species: TextView = itemView.findViewById(R.id.charactersListItemSpeciesTextView)
+        private val gender: ImageView = itemView.findViewById(R.id.charactersListItemGenderImageView)
 
         fun bind(character: Character?) {
             fullName.text = character?.name
             avatar.load(character?.image)
-            when(character?.gender) {
-                "male" -> gender.setImageResource(R.drawable.ic_male)
-                "female" -> gender.setImageResource(R.drawable.ic_female)
-                "genderless" -> gender.setImageResource(R.drawable.ic_genderless)
-                else -> gender.setImageResource(R.drawable.ic_gender_unknown)
+            when (character?.gender) {
+                "Female" -> gender.setImageResource(R.drawable.ic_female)
+                "Unknown" -> gender.setImageResource(R.drawable.ic_gender_unknown)
+                "Genderless" -> gender.setImageResource(R.drawable.ic_genderless)
             }
             status.text = character?.status
             species.text = character?.species
@@ -57,7 +53,7 @@ class CharactersAdapter(
 
 }
 
-object UserComparator : DiffUtil.ItemCallback<Character>() {
+object CharacterComparator : DiffUtil.ItemCallback<Character>() {
     override fun areItemsTheSame(oldItem: Character, newItem: Character): Boolean {
         // Id is unique.
         return oldItem.id == newItem.id

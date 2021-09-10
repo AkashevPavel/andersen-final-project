@@ -20,7 +20,7 @@ class CharactersFragment : Fragment(R.layout.fragment_all_characters) {
     }
 
     private lateinit var adapter: CharactersAdapter
-    private lateinit var onClickListener: OnClickListener
+    private lateinit var onClickListener: OnCharacterClickedListener
 
     private val viewModel: CharactersViewModel by lazy {
         ViewModelProvider(this).get(CharactersViewModel::class.java)
@@ -28,9 +28,9 @@ class CharactersFragment : Fragment(R.layout.fragment_all_characters) {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        onClickListener = context as OnClickListener
-        adapter = CharactersAdapter(UserComparator) {
-            onClickListener.onClick(it)
+        onClickListener = context as OnCharacterClickedListener
+        adapter = CharactersAdapter(CharacterComparator) {
+            onClickListener.onCharacterClicked(it)
         }
     }
 
@@ -38,19 +38,17 @@ class CharactersFragment : Fragment(R.layout.fragment_all_characters) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView = view.findViewById<RecyclerView>(R.id.allCharactersRecyclerView)
-
-
         recyclerView.layoutManager = GridLayoutManager(this.context, 2)
         recyclerView.adapter = adapter
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.flow.collectLatest { pagingData ->
+            viewModel.charactersFlow.collectLatest { pagingData ->
                 adapter.submitData(pagingData)
             }
         }
     }
 
-    interface OnClickListener {
-        fun onClick(id: Int)
+    interface OnCharacterClickedListener {
+        fun onCharacterClicked(id: Int)
     }
 }

@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
-        android:id="@+id/listItemAvatarImageView"
+        android:id="@+id/charactersListItemAvatarImageView"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         app:layout_constraintDimensionRatio="1:1"
@@ -16,45 +16,45 @@
         tools:src="@tools:sample/backgrounds/scenic[4]"/>
 
     <ImageView
-        android:id="@+id/listItemGenderImageView"
+        android:id="@+id/charactersListItemGenderImageView"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginEnd="8dp"
         android:src="@drawable/ic_male"
-        app:layout_constraintTop_toTopOf="@+id/listItemNameTextView"
+        app:layout_constraintTop_toTopOf="@+id/charactersListItemNameTextView"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
-        android:id="@+id/listItemNameTextView"
+        android:id="@+id/charactersListItemNameTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         tools:text="FULL NAME"
         android:layout_marginTop="8dp"
         android:layout_marginStart="6dp"
-        app:layout_constraintStart_toEndOf="@+id/listItemAvatarImageView"
-        app:layout_constraintEnd_toStartOf="@+id/listItemGenderImageView"
+        app:layout_constraintStart_toEndOf="@+id/charactersListItemAvatarImageView"
+        app:layout_constraintEnd_toStartOf="@+id/charactersListItemGenderImageView"
         app:layout_constraintTop_toTopOf="parent"
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="?attr/colorOnBackground"/>
 
     <TextView
-        android:id="@+id/listItemStatusTextView"
+        android:id="@+id/charactersListItemStatusTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         tools:text="status"
-        app:layout_constraintStart_toStartOf="@+id/listItemNameTextView"
-        app:layout_constraintTop_toBottomOf="@+id/listItemNameTextView"
+        app:layout_constraintStart_toStartOf="@+id/charactersListItemNameTextView"
+        app:layout_constraintTop_toBottomOf="@+id/charactersListItemNameTextView"
         android:textStyle="italic"/>
 
     <TextView
-        android:id="@+id/listItemSpeciesTextView"
+        android:id="@+id/charactersListItemSpeciesTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         tools:text="human"
         android:layout_marginStart="8dp"
         android:textStyle="italic"
-        app:layout_constraintStart_toEndOf="@+id/listItemStatusTextView"
-        app:layout_constraintTop_toBottomOf="@+id/listItemNameTextView"/>
+        app:layout_constraintStart_toEndOf="@+id/charactersListItemStatusTextView"
+        app:layout_constraintTop_toBottomOf="@+id/charactersListItemNameTextView"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

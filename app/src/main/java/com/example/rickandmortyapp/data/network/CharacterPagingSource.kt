@@ -2,15 +2,15 @@ package com.example.rickandmortyapp.data.network
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.rickandmortyapp.data.RickAndMortyRepository
-import com.example.rickandmortyapp.data.model.Character
-import com.example.rickandmortyapp.data.toCharacter
+import com.example.rickandmortyapp.data.CharacterRepository
+import com.example.rickandmortyapp.domain.models.Character
+import com.example.rickandmortyapp.domain.mappers.CharacterMapper
 
 import java.io.IOException
 import java.lang.Exception
 
 class CharacterPagingSource(
-    private val repository: RickAndMortyRepository
+    private val repository: CharacterRepository
 ) : PagingSource<Int, Character>() {
 
     override fun getRefreshKey(state: PagingState<Int, Character>): Int? {
@@ -25,7 +25,7 @@ class CharacterPagingSource(
 
             val response = repository.getCharactersPage(pageIndex)
 
-            val characters = response!!.results.map { it.toCharacter() }
+            val characters = checkNotNull(response).results.map { CharacterMapper.buildFrom(it) }
 
             val prevKey = getPage(response.info.prev)
             val nextKey = getPage(response.info.next)

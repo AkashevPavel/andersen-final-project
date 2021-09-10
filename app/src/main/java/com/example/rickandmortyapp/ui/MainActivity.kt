@@ -10,10 +10,11 @@ import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.ui.character.CharacterInfoFragment
 import com.example.rickandmortyapp.ui.character.CharactersFragment
 import com.example.rickandmortyapp.ui.location.LocationInfoFragment
+import com.example.rickandmortyapp.ui.location.LocationsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity(R.layout.activity_main), CharactersFragment.OnClickListener,
-    LocationInfoFragment.OnResidentClickListener {
+class MainActivity : AppCompatActivity(R.layout.activity_main), CharactersFragment.OnCharacterClickedListener,
+    LocationInfoFragment.OnResidentClickListener, LocationsFragment.OnLocationClickedListener {
 
     private lateinit var navigation: BottomNavigationView
 
@@ -33,11 +34,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), CharactersFragme
                     true
                 }
                 R.id.locations_menu -> {
-                    supportFragmentManager.beginTransaction().run {
-                        replace(R.id.container, LocationInfoFragment.newInstance(4), CharacterInfoFragment.TAG)
-                        addToBackStack("location info")
-                        commit()
-                    }
+                    supportFragmentManager.commit { replace<LocationsFragment>(R.id.container) }
                     true
                 }
                 R.id.episodes_menu -> {
@@ -49,10 +46,18 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), CharactersFragme
         }
     }
 
-    override fun onClick(id: Int) {
+    override fun onCharacterClicked(id: Int) {
         supportFragmentManager.beginTransaction().run {
             replace(R.id.container, CharacterInfoFragment.newInstance(id), CharacterInfoFragment.TAG)
-            addToBackStack(CharacterInfoFragment.TAG)
+            addToBackStack("character-info")
+            commit()
+        }
+    }
+
+    override fun onLocationClicked(id: Int) {
+        supportFragmentManager.beginTransaction().run{
+            replace(R.id.container, LocationInfoFragment.newInstance(id), LocationInfoFragment.TAG)
+            addToBackStack("location-info")
             commit()
         }
     }

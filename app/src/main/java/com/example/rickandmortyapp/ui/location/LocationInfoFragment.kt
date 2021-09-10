@@ -34,7 +34,7 @@ class LocationInfoFragment : Fragment(R.layout.fragment_location_info) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         onResidentClickListener = context as OnResidentClickListener
-        adapter = ResidentsAdapter { onResidentClickListener.onClick(it) }
+        adapter = ResidentsAdapter { onResidentClickListener.onCharacterClicked(it) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,14 +51,11 @@ class LocationInfoFragment : Fragment(R.layout.fragment_location_info) {
             name.text = response.name
             type.text = response.type
             dimension.text = response.dimension
-            viewModel.getResidents(response.residents)
-            viewModel.residentsLiveData.observe(viewLifecycleOwner) {
-                adapter.setResidents(it)
-            }
+            adapter.residentsList = response.residents
         }
     }
 
     interface OnResidentClickListener {
-        fun onClick(id: Int)
+        fun onCharacterClicked(id: Int)
     }
 }
