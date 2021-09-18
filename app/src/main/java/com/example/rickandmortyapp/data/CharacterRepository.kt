@@ -12,12 +12,16 @@ import com.example.rickandmortyapp.domain.models.Character
 
 class CharacterRepository {
 
+    companion object {
+        private const val ORIGIN = "ORIGIN"
+        private const val CURRENT = "CURRENT"
+    }
+
     suspend fun getCharacterById(characterId: Int) : Character? {
         val request = NetworkLayer.apiClient.getCharacterById(characterId)
         if (!request.isSuccessful) {
             return null
         }
-
         val relatedEpisodes = getRelatedEpisodes(request.body)
         return CharacterMapper.buildFrom(
             response = request.body,
@@ -43,6 +47,4 @@ class CharacterRepository {
         }
         return request.body
     }
-
-
 }

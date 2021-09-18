@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyapp.R
@@ -14,27 +15,19 @@ import kotlinx.coroutines.launch
 
 class CharactersFragment : Fragment(R.layout.fragment_all_characters) {
 
-    companion object {
-        fun newInstance() = CharactersFragment()
-        const val TAG = "CharactersFragment"
-    }
-
     private lateinit var adapter: CharactersAdapter
-    private lateinit var onClickListener: OnCharacterClickedListener
 
     private val viewModel: CharactersViewModel by lazy {
         ViewModelProvider(this).get(CharactersViewModel::class.java)
     }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        onClickListener = context as OnCharacterClickedListener
-        adapter = CharactersAdapter(CharacterComparator) {
-            onClickListener.onCharacterClicked(it)
+        adapter = CharactersAdapter(CharacterComparator) { characterId ->
+            val action = CharactersFragmentDirections
+                .actionCharactersFragmentToCharacterInfoFragment(characterId)
+            findNavController().navigate(action)
         }
     }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView = view.findViewById<RecyclerView>(R.id.allCharactersRecyclerView)
@@ -46,9 +39,5 @@ class CharactersFragment : Fragment(R.layout.fragment_all_characters) {
                 adapter.submitData(pagingData)
             }
         }
-    }
-
-    interface OnCharacterClickedListener {
-        fun onCharacterClicked(id: Int)
     }
 }

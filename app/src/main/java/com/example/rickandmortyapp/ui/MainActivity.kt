@@ -2,78 +2,71 @@ package com.example.rickandmortyapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
-
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.rickandmortyapp.R
-import com.example.rickandmortyapp.ui.character.CharacterInfoFragment
-import com.example.rickandmortyapp.ui.character.CharactersFragment
-import com.example.rickandmortyapp.ui.episode.EpisodeInfoFragment
-import com.example.rickandmortyapp.ui.episode.EpisodesFragment
-import com.example.rickandmortyapp.ui.location.LocationInfoFragment
-import com.example.rickandmortyapp.ui.location.LocationsFragment
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity(R.layout.activity_main), CharactersFragment.OnCharacterClickedListener,
-    LocationInfoFragment.OnRelatedCharacterClickListener, LocationsFragment.OnLocationClickedListener,
-    EpisodesFragment.OnEpisodeClickedListener, EpisodeInfoFragment.OnRelatedCharacterClickListener,
-    CharacterInfoFragment.OnRelatedLocationClickedListener,
-    CharacterInfoFragment.OnRelatedEpisodeClickedListener {
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
-    private lateinit var navigation: BottomNavigationView
+    private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        navigation = findViewById(R.id.bottomNavigation)
-
-        configureBottomNavigation()
+        configureNavigation()
     }
 
-    private fun configureBottomNavigation() {
-        navigation.setOnItemSelectedListener { item ->
-            when(item.itemId) {
-                R.id.characters_menu -> {
-                    supportFragmentManager.commit { replace<CharactersFragment>(R.id.container) }
-                    true
-                }
-                R.id.locations_menu -> {
-                    supportFragmentManager.commit { replace<LocationsFragment>(R.id.container) }
-                    true
-                }
-                R.id.episodes_menu -> {
-                    supportFragmentManager.commit { replace<EpisodesFragment>(R.id.container) }
-                    true
-                }
-                else -> false
+    private fun configureNavigation() {
+        val host: NavHostFragment = supportFragmentManager
+            .findFragmentById(R.id.app_nav_host_fragment) as NavHostFragment? ?: return
+        navController = host.navController
+        bottomNavigationView = findViewById(R.id.bottomNavigation)
+        bottomNavigationView.setupWithNavController(navController)
+
+        appBarConfiguration = AppBarConfiguration(setOf(
+            R.id.charactersFragment,
+            R.id.locationsFragment,
+            R.id.episodesFragment
+        ))
+
+        setupActionBarWithNavController(
+            navController = navController,
+            configuration = appBarConfiguration
+        )
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when(destination.id) {
+                R.id.charactersFragment -> showBottomNav()
+                R.id.locationsFragment -> showBottomNav()
+                R.id.episodesFragment -> showBottomNav()
+                else -> hideBottomNav()
             }
         }
+
     }
 
-    override fun onCharacterClicked(id: Int) {
-        supportFragmentManager.beginTransaction().run {
-            replace(R.id.container, CharacterInfoFragment.newInstance(id), CharacterInfoFragment.TAG)
-            addToBackStack("character-info")
-            commit()
-        }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.top_app_bar, menu)
+        return true
     }
 
-    override fun onLocationClicked(id: Int) {
-        supportFragmentManager.beginTransaction().run{
-            replace(R.id.container, LocationInfoFragment.newInstance(id), LocationInfoFragment.TAG)
-            addToBackStack("location-info")
-            commit()
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
-    override fun onEpisodeClicked(id: Int) {
-        supportFragmentManager.beginTransaction().run {
-            replace(R.id.container, EpisodeInfoFragment.newInstance(id), EpisodeInfoFragment.TAG)
-            addToBackStack("episode-info")
-            commit()
-        }
+    private fun showBottomNav() {
+        bottomNavigationView.visibility = View.VISIBLE
     }
-
-
+    private fun hideBottomNav() {
+        bottomNavigationView.visibility = View.GONE
+    }
 }

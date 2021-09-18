@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/charactersFragment">
+
+    <fragment
+        android:id="@+id/charactersFragment"
+        android:name="com.example.rickandmortyapp.ui.character.CharactersFragment"
+        android:label="Characters">
+        <action
+            android:id="@+id/action_charactersFragment_to_characterInfoFragment"
+            app:destination="@id/characterInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/characterInfoFragment"
+        android:name="com.example.rickandmortyapp.ui.character.CharacterInfoFragment"
+        android:label="Character detailes">
+        <action
+            android:id="@+id/action_characterInfoFragment_to_episodeInfoFragment"
+            app:destination="@id/episodeInfoFragment" />
+        <action
+            android:id="@+id/action_characterInfoFragment_to_locationInfoFragment"
+            app:destination="@id/locationInfoFragment" />
+        <argument
+            android:name="characterId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/episodesFragment"
+        android:name="com.example.rickandmortyapp.ui.episode.EpisodesFragment"
+        android:label="Episodes">
+        <action
+            android:id="@+id/action_episodesFragment_to_episodeInfoFragment"
+            app:destination="@id/episodeInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/locationsFragment"
+        android:name="com.example.rickandmortyapp.ui.location.LocationsFragment"
+        android:label="Locations">
+        <action
+            android:id="@+id/action_locationsFragment_to_locationInfoFragment"
+            app:destination="@id/locationInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/episodeInfoFragment"
+        android:name="com.example.rickandmortyapp.ui.episode.EpisodeInfoFragment"
+        android:label="Episode detailes">
+        <action
+            android:id="@+id/action_episodeInfoFragment_to_characterInfoFragment"
+            app:destination="@id/characterInfoFragment" />
+        <argument
+            android:name="episodeId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/locationInfoFragment"
+        android:name="com.example.rickandmortyapp.ui.location.LocationInfoFragment"
+        android:label="Location detailes">
+        <action
+            android:id="@+id/action_locationInfoFragment_to_characterInfoFragment"
+            app:destination="@id/characterInfoFragment" />
+        <argument
+            android:name="locationId"
+            app:argType="integer" />
+    </fragment>
+</navigation>

@@ -9,8 +9,7 @@ import com.example.rickandmortyapp.domain.models.Location
 object CharacterMapper {
     fun buildFrom(
         response: CharacterDto,
-        relatedEpisodes: List<EpisodeDto> = listOf(),
-        relatedLocation: LocationDto? = null
+        relatedEpisodes: List<EpisodeDto> = listOf()
     ): Character {
         return Character(
             name = response.name,
@@ -21,12 +20,10 @@ object CharacterMapper {
             gender = response.gender,
             image = response.image,
             location = Location(
-                id = response.location.id,
                 name = response.location.name,
                 url = response.location.url
             ),
             origin = Location(
-                id = response.origin.id,
                 name = response.origin.name,
                 url = response.origin.url
             ),

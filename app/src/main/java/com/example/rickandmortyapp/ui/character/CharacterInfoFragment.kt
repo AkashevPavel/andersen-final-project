@@ -5,42 +5,33 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.rickandmortyapp.R
+import com.example.rickandmortyapp.ui.episode.EpisodeInfoFragmentDirections
 import com.example.rickandmortyapp.ui.episode.RelatedEpisodesAdapter
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.appbar.MaterialToolbar
 
 class CharacterInfoFragment : Fragment(R.layout.fragment_character_info) {
 
-    companion object {
-        const val TAG = "CharacterInfoFragment"
-        private const val CHAR_KEY = "CHAR_KEY"
-        fun newInstance(id: Int): CharacterInfoFragment {
-            val characterInfoFragment = CharacterInfoFragment()
-            val bundle = Bundle()
-            bundle.putInt(CHAR_KEY, id)
-            characterInfoFragment.arguments = bundle
-            return characterInfoFragment
-        }
-    }
     private val viewModel: CharacterInfoViewModel by lazy {
         ViewModelProvider(this).get(CharacterInfoViewModel::class.java)
     }
     private lateinit var adapter: RelatedEpisodesAdapter
-    private lateinit var onRelatedLocationClickedListener: OnRelatedLocationClickedListener
-    private lateinit var onRelatedEpisodeClickedListener: OnRelatedEpisodeClickedListener
+    private val args by navArgs<CharacterInfoFragmentArgs>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        onRelatedEpisodeClickedListener = context as OnRelatedEpisodeClickedListener
-        onRelatedLocationClickedListener = context as OnRelatedLocationClickedListener
-        adapter = RelatedEpisodesAdapter {
-            onRelatedEpisodeClickedListener.onEpisodeClicked(it)
+        adapter = RelatedEpisodesAdapter { episodeId ->
+            val action = CharacterInfoFragmentDirections
+                .actionCharacterInfoFragmentToEpisodeInfoFragment(episodeId)
+            findNavController().navigate(action)
         }
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,13 +45,13 @@ class CharacterInfoFragment : Fragment(R.layout.fragment_character_info) {
         val gender = view.findViewById<ImageView>(R.id.genderImageView)
         val avatar = view.findViewById<ImageView>(R.id.avatarImageView)
         val recycler = view.findViewById<RecyclerView>(R.id.characterInfoRecyclerView)
-        recycler.adapter = adapter
+        val id = args.characterId
 
-        val id = requireArguments().getInt(CHAR_KEY)
+        recycler.adapter = adapter
         viewModel.refreshCharacter(id)
         viewModel.characterByIdLiveData.observe(viewLifecycleOwner) { response ->
             if (response != null) {
-                when(response.gender) {
+                when (response.gender) {
                     "Male" -> gender.setImageResource(R.drawable.ic_male)
                     "Female" -> gender.setImageResource(R.drawable.ic_female)
                     "Genderless" -> gender.setImageResource(R.drawable.ic_genderless)
@@ -73,13 +64,31 @@ class CharacterInfoFragment : Fragment(R.layout.fragment_character_info) {
                 species.text = response.species
                 avatar.load(response.image)
                 adapter.relatedEpisodesList = response.episode
+                location.setOnClickListener {
+                    val action = CharacterInfoFragmentDirections
+                        .actionCharacterInfoFragmentToLocationInfoFragment(getIdFromUrl(response.location.url))
+                    findNavController().navigate(action)
+                }
+
+                origin.setOnClickListener {
+                    if (origin.text != "unknown") {
+                        val action = CharacterInfoFragmentDirections
+                            .actionCharacterInfoFragmentToLocationInfoFragment(getIdFromUrl(response.origin.url))
+                        findNavController().navigate(action)
+                    } else {
+                        showToast("Sorry we don't know where it is :(")
+                    }
+                }
+
             }
         }
     }
-    interface OnRelatedLocationClickedListener{
-        fun onLocationClicked(id: Int)
+
+    private fun showToast(msg: String) {
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
     }
-    interface OnRelatedEpisodeClickedListener {
-        fun onEpisodeClicked(id: Int)
+
+    private fun getIdFromUrl(url: String): Int {
+        return url.substring(startIndex = url.lastIndexOf("/") + 1).toInt()
     }
 }

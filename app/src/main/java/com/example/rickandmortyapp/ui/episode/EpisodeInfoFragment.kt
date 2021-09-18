@@ -6,42 +6,32 @@ import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.ui.character.RelatedCharactersAdapter
+import com.google.android.material.appbar.MaterialToolbar
 
 class EpisodeInfoFragment : Fragment(R.layout.fragment_episode_info) {
-    companion object {
-        const val TAG = "EpisodeInfoFragment"
-        private const val EPI_KEY = "EPI_KEY"
-        fun newInstance(episodeId: Int): EpisodeInfoFragment {
-            val episodeInfoFragment = EpisodeInfoFragment()
-            val bundle = Bundle()
-            bundle.putInt(EPI_KEY, episodeId)
-            episodeInfoFragment.arguments = bundle
-            return episodeInfoFragment
-        }
-    }
 
     private val viewModel: EpisodeInfoViewModel by lazy {
         ViewModelProvider(this).get(EpisodeInfoViewModel::class.java)
     }
     private lateinit var adapter: RelatedCharactersAdapter
-    private lateinit var onRelatedCharacterClickListener: OnRelatedCharacterClickListener
+    private val args by navArgs<EpisodeInfoFragmentArgs>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        onRelatedCharacterClickListener = context as OnRelatedCharacterClickListener
         adapter = RelatedCharactersAdapter {
-            onRelatedCharacterClickListener.onCharacterClicked(it)
+            val action = EpisodeInfoFragmentDirections.actionEpisodeInfoFragmentToCharacterInfoFragment(it)
+            findNavController().navigate(action)
         }
-
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val id = requireArguments().getInt(EPI_KEY)
+        val id = args.episodeId
         val recycler: RecyclerView = view.findViewById(R.id.episodeInfoRecyclerView)
         val name: TextView = view.findViewById(R.id.episodeNameTextView)
         val airDate: TextView = view.findViewById(R.id.episodeAirDateTextView)
@@ -54,9 +44,5 @@ class EpisodeInfoFragment : Fragment(R.layout.fragment_episode_info) {
             number.text = episode.episode
             adapter.relatedCharactersList = episode.characters
         }
-    }
-
-    interface OnRelatedCharacterClickListener {
-        fun onCharacterClicked(id: Int)
     }
 }

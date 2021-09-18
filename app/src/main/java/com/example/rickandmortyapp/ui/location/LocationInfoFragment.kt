@@ -6,41 +6,36 @@ import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.ui.character.RelatedCharactersAdapter
+import com.google.android.material.appbar.MaterialToolbar
 
 class LocationInfoFragment : Fragment(R.layout.fragment_location_info) {
-
-    companion object {
-        const val TAG = "LocationInfoFragment"
-        private const val LOC_KEY = "LOC_KEY"
-        fun newInstance(locationId: Int): LocationInfoFragment {
-            val locationInfoFragment = LocationInfoFragment()
-            val bundle = Bundle()
-            bundle.putInt(LOC_KEY, locationId)
-            locationInfoFragment.arguments = bundle
-            return locationInfoFragment
-        }
-    }
 
     private val viewModel: LocationInfoViewModel by lazy {
         ViewModelProvider(this).get(LocationInfoViewModel::class.java)
     }
     private lateinit var adapter: RelatedCharactersAdapter
-    private lateinit var onResidentClickListener: OnRelatedCharacterClickListener
     private lateinit var recyclerView: RecyclerView
+    private val args by navArgs<LocationInfoFragmentArgs>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        onResidentClickListener = context as OnRelatedCharacterClickListener
-        adapter = RelatedCharactersAdapter { onResidentClickListener.onCharacterClicked(it) }
+        adapter = RelatedCharactersAdapter { characterId ->
+            val action = LocationInfoFragmentDirections
+                .actionLocationInfoFragmentToCharacterInfoFragment(characterId)
+            findNavController().navigate(action)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val id = requireArguments().getInt(LOC_KEY)
+
+        val id = args.locationId
         val name: TextView = view.findViewById(R.id.locationNameTextView)
         val type: TextView = view.findViewById(R.id.locationTypeTextView)
         val dimension: TextView = view.findViewById(R.id.locationDimensionTextView)
@@ -56,7 +51,4 @@ class LocationInfoFragment : Fragment(R.layout.fragment_location_info) {
         }
     }
 
-    interface OnRelatedCharacterClickListener {
-        fun onCharacterClicked(id: Int)
-    }
 }
