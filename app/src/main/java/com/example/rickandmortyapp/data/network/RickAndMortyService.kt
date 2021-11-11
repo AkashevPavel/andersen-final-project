@@ -1,12 +1,18 @@
 package com.example.rickandmortyapp.data.network
 
-import com.example.rickandmortyapp.data.network.model.character.CharacterDto
-import com.example.rickandmortyapp.data.network.model.character.CharacterResponseDto
-import com.example.rickandmortyapp.data.network.model.episode.EpisodeDto
-import com.example.rickandmortyapp.data.network.model.episode.EpisodeResponseDto
-import com.example.rickandmortyapp.data.network.model.location.LocationDto
-import com.example.rickandmortyapp.data.network.model.location.LocationResponseDto
+import com.example.rickandmortyapp.data.model.character.CharacterDto
+import com.example.rickandmortyapp.data.model.character.CharacterResponse
+import com.example.rickandmortyapp.data.model.episode.EpisodeDto
+import com.example.rickandmortyapp.data.model.episode.EpisodeResponse
+import com.example.rickandmortyapp.data.model.location.LocationDto
+import com.example.rickandmortyapp.data.model.location.LocationResponse
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -21,7 +27,7 @@ interface RickAndMortyService {
     @GET("character/")
     suspend fun getCharactersPage(
         @Query("page") pageIndex: Int
-    ): Response<CharacterResponseDto>
+    ): Response<CharacterResponse>
 
     @GET("character/{character-range}")
     suspend fun getCharacterRange(
@@ -36,7 +42,7 @@ interface RickAndMortyService {
     @GET("location/")
     suspend fun getLocationsPage(
         @Query("page") pageIndex: Int
-    ): Response<LocationResponseDto>
+    ): Response<LocationResponse>
 
     @GET("episode/{episode-id}")
     suspend fun getEpisodeById(
@@ -46,10 +52,33 @@ interface RickAndMortyService {
     @GET("episode/")
     suspend fun getEpisodesPage(
         @Query("page") pageIndex: Int
-    ): Response<EpisodeResponseDto>
+    ): Response<EpisodeResponse>
 
     @GET("episode/{episode-range}")
     suspend fun getEpisodeRange(
         @Path("episode-range") episodeRange: String
     ): Response<List<EpisodeDto>>
+
+    companion object {
+
+        private const val BASE_URL = "https://rickandmortyapi.com/api/"
+
+        fun create(): RickAndMortyService {
+             val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
+             val okHttpClient = OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .build()
+             val moshi = Moshi.Builder()
+                .add(KotlinJsonAdapterFactory())
+                .build()
+             val retrofit = Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
+                .client(okHttpClient)
+                .build()
+            return retrofit.create(RickAndMortyService::class.java)
+        }
+    }
 }

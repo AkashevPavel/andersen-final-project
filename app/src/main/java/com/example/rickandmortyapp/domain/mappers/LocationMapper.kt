@@ -1,7 +1,7 @@
 package com.example.rickandmortyapp.domain.mappers
 
-import com.example.rickandmortyapp.data.network.model.character.CharacterDto
-import com.example.rickandmortyapp.data.network.model.location.LocationDto
+import com.example.rickandmortyapp.data.model.character.CharacterDto
+import com.example.rickandmortyapp.data.model.location.LocationDto
 import com.example.rickandmortyapp.domain.models.Location
 
 object LocationMapper {

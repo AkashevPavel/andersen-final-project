@@ -7,25 +7,25 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.rickandmortyapp.R
-import com.example.rickandmortyapp.ui.episode.EpisodeInfoFragmentDirections
-import com.example.rickandmortyapp.ui.episode.RelatedEpisodesAdapter
-import com.google.android.material.appbar.MaterialToolbar
+import com.example.rickandmortyapp.ui.adapters.RelatedEpisodesAdapter
+import com.example.rickandmortyapp.ui.viewmodels.CharacterInfoViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CharacterInfoFragment : Fragment(R.layout.fragment_character_info) {
 
-    private val viewModel: CharacterInfoViewModel by lazy {
-        ViewModelProvider(this).get(CharacterInfoViewModel::class.java)
-    }
+    private val viewModel: CharacterInfoViewModel by viewModels()
     private lateinit var adapter: RelatedEpisodesAdapter
     private val args by navArgs<CharacterInfoFragmentArgs>()
 
     override fun onAttach(context: Context) {
+
         super.onAttach(context)
         adapter = RelatedEpisodesAdapter { episodeId ->
             val action = CharacterInfoFragmentDirections
@@ -45,10 +45,9 @@ class CharacterInfoFragment : Fragment(R.layout.fragment_character_info) {
         val gender = view.findViewById<ImageView>(R.id.genderImageView)
         val avatar = view.findViewById<ImageView>(R.id.avatarImageView)
         val recycler = view.findViewById<RecyclerView>(R.id.characterInfoRecyclerView)
-        val id = args.characterId
 
         recycler.adapter = adapter
-        viewModel.refreshCharacter(id)
+        viewModel.refreshCharacter(args.characterId)
         viewModel.characterByIdLiveData.observe(viewLifecycleOwner) { response ->
             if (response != null) {
                 when (response.gender) {

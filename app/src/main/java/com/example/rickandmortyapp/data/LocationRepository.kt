@@ -1,9 +1,9 @@
 package com.example.rickandmortyapp.data
 
 import com.example.rickandmortyapp.data.network.NetworkLayer
-import com.example.rickandmortyapp.data.network.model.character.CharacterDto
-import com.example.rickandmortyapp.data.network.model.location.LocationDto
-import com.example.rickandmortyapp.data.network.model.location.LocationResponseDto
+import com.example.rickandmortyapp.data.model.character.CharacterDto
+import com.example.rickandmortyapp.data.model.location.LocationDto
+import com.example.rickandmortyapp.data.model.location.LocationResponse
 import com.example.rickandmortyapp.domain.mappers.LocationMapper
 import com.example.rickandmortyapp.domain.models.Location
 
@@ -21,7 +21,7 @@ class LocationRepository {
         )
     }
 
-    suspend fun getLocationsPage(pageIndex: Int): LocationResponseDto? {
+    suspend fun getLocationsPage(pageIndex: Int): LocationResponse? {
         val request = NetworkLayer.apiClient.getLocationsPage(pageIndex)
         return if (request.isSuccessful) request.body else null
     }

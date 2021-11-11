@@ -10,8 +10,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyapp.R
-import com.example.rickandmortyapp.ui.character.RelatedCharactersAdapter
-import com.google.android.material.appbar.MaterialToolbar
+import com.example.rickandmortyapp.ui.adapters.RelatedCharactersAdapter
+import com.example.rickandmortyapp.ui.viewmodels.EpisodeInfoViewModel
 
 class EpisodeInfoFragment : Fragment(R.layout.fragment_episode_info) {
 

@@ -1,21 +1,22 @@
 package com.example.rickandmortyapp.data.network
 
-import com.example.rickandmortyapp.data.network.model.character.CharacterDto
-import com.example.rickandmortyapp.data.network.model.character.CharacterResponseDto
-import com.example.rickandmortyapp.data.network.model.SimpleResponse
-import com.example.rickandmortyapp.data.network.model.episode.EpisodeDto
-import com.example.rickandmortyapp.data.network.model.episode.EpisodeResponseDto
-import com.example.rickandmortyapp.data.network.model.location.LocationDto
-import com.example.rickandmortyapp.data.network.model.location.LocationResponseDto
+import com.example.rickandmortyapp.data.model.character.CharacterDto
+import com.example.rickandmortyapp.data.model.character.CharacterResponse
+import com.example.rickandmortyapp.data.model.SimpleResponse
+import com.example.rickandmortyapp.data.model.episode.EpisodeDto
+import com.example.rickandmortyapp.data.model.episode.EpisodeResponse
+import com.example.rickandmortyapp.data.model.location.LocationDto
+import com.example.rickandmortyapp.data.model.location.LocationResponse
 import retrofit2.Response
 import java.lang.Exception
+import javax.inject.Inject
 
-class ApiClient(private val rickAndMortyService: RickAndMortyService) {
+class ApiClient @Inject constructor(private val rickAndMortyService: RickAndMortyService) {
 
     suspend fun getCharacterById(characterId: Int): SimpleResponse<CharacterDto> {
         return safeApiCall { rickAndMortyService.getCharacterById(characterId) }
     }
-    suspend fun getCharactersPage(pageIndex: Int): SimpleResponse<CharacterResponseDto> {
+    suspend fun getCharactersPage(pageIndex: Int): SimpleResponse<CharacterResponse> {
         return safeApiCall { rickAndMortyService.getCharactersPage(pageIndex) }
     }
     suspend fun getCharacterRange(characterRange: String): SimpleResponse<List<CharacterDto>> {
@@ -24,13 +25,13 @@ class ApiClient(private val rickAndMortyService: RickAndMortyService) {
     suspend fun getLocationById(locationId: Int): SimpleResponse<LocationDto> {
         return safeApiCall { rickAndMortyService.getLocationById(locationId) }
     }
-    suspend fun getLocationsPage(pageIndex: Int): SimpleResponse<LocationResponseDto> {
+    suspend fun getLocationsPage(pageIndex: Int): SimpleResponse<LocationResponse> {
         return safeApiCall { rickAndMortyService.getLocationsPage(pageIndex) }
     }
     suspend fun getEpisodeById(episodeId: Int): SimpleResponse<EpisodeDto> {
         return safeApiCall { rickAndMortyService.getEpisodeById(episodeId) }
     }
-    suspend fun getEpisodesPage(pageIndex: Int): SimpleResponse<EpisodeResponseDto> {
+    suspend fun getEpisodesPage(pageIndex: Int): SimpleResponse<EpisodeResponse> {
         return safeApiCall { rickAndMortyService.getEpisodesPage(pageIndex) }
     }
     suspend fun getEpisodeRange(episodeRange: String): SimpleResponse<List<EpisodeDto>> {

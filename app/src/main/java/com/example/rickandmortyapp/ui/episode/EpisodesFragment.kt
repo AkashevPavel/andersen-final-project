@@ -9,6 +9,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyapp.R
+import com.example.rickandmortyapp.ui.adapters.EpisodeComparator
+import com.example.rickandmortyapp.ui.adapters.EpisodesAdapter
+import com.example.rickandmortyapp.ui.viewmodels.EpisodesViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

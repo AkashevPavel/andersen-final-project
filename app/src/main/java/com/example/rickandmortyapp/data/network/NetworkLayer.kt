@@ -7,6 +7,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
+// TODO: 26.09.2021 delete
 object NetworkLayer {
 
     private val httpLoggingInterceptor = HttpLoggingInterceptor().apply {

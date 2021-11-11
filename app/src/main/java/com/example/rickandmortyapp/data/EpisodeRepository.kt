@@ -1,15 +1,15 @@
 package com.example.rickandmortyapp.data
 
 import com.example.rickandmortyapp.data.network.NetworkLayer
-import com.example.rickandmortyapp.data.network.model.character.CharacterDto
-import com.example.rickandmortyapp.data.network.model.episode.EpisodeDto
-import com.example.rickandmortyapp.data.network.model.episode.EpisodeResponseDto
+import com.example.rickandmortyapp.data.model.character.CharacterDto
+import com.example.rickandmortyapp.data.model.episode.EpisodeDto
+import com.example.rickandmortyapp.data.model.episode.EpisodeResponse
 import com.example.rickandmortyapp.domain.mappers.EpisodeMapper
 import com.example.rickandmortyapp.domain.models.Episode
 
 class EpisodeRepository {
 
-    suspend fun getEpisodesPage(pageIndex: Int): EpisodeResponseDto? {
+    suspend fun getEpisodesPage(pageIndex: Int): EpisodeResponse? {
         val request = NetworkLayer.apiClient.getEpisodesPage(pageIndex)
         return if (request.isSuccessful) request.body else null
     }
